@@ -2,10 +2,10 @@
 title: "Mote Color Palettes"
 output: html_notebook
 ---
-```{r}
-library(ggplot2)
-```
 
+## Mote Marine Laboratory Colors
+
+This code contains the hex codes and names of the colors from Mote's toolkit and shows how to incorporate them into base R plots and ggplot. More graph examples in the 'MoteColorPalettes.rmd' file.
 
 ```{r}
 motecols<-read.csv("ColorList.csv")
@@ -41,70 +41,5 @@ barplot(rep(1,length(Mote)),col=Mote,names=names(Mote),cex.lab=2,las=2)
 par(mar=c(4,4,4,4))
 plot(c(1:25),c(1:25),col=Mote,pch=19,xlab="",ylab="",cex=2)
 ```
-## Some Plot Examples
 
-First, make some fake data to plot
-```{r}
-my.data<-c()
-my.data$rank<-c(runif(100,min=0,max=1))
-my.data$physio<-c(runif(100,min=0,max=1))
-my.data$group<-c("MCAV","OFAV","PSTR","ACER")
-my.data<-data.frame(my.data)
-my.data$group<-as.factor(my.data$group)
-my.data$Species<-my.data$group
-```
-
-Boxplot:
-```{r}
-ggplot(my.data,aes(group,rank,fill=group)) +
-  geom_boxplot() + 
-  theme_bw()+
-  xlab("Species") + 
-  theme(legend.position="none")+ 
-  theme(text = element_text(size=12))+
-  ylab("Rank")  + 
-  theme(axis.text.x = element_text(angle = 45,hjust=1)) +  
-  theme(strip.text.x = element_text(size = 12))+
-  scale_fill_manual(values=Mote1)
-
-```
-
-Bargraph
-```{r}
-d.avg<-aggregate(rank~group,data=my.data,FUN=mean) #get means 
-
-d.se<-aggregate(rank~group,data=my.data,FUN=function(x) sd(x)/sqrt(length(x))) #get standard error
-
-#pull into one dataframe
-df<-cbind(d.avg,d.se$rank)
-colnames(df)<-c("group","mean","se")
-
-ggplot(df,aes(x=group,y=mean,fill=group))+
-  geom_bar(stat="identity",position=position_dodge(.9))+
-  geom_errorbar(aes(ymax=mean + se, ymin=mean-se),width=0.2,position=position_dodge(.9))+
-  scale_fill_manual(values=c(MotePowderBlue,MoteCoral,MoteAnemone,MoteStaghorn), drop = FALSE)+
-  scale_x_discrete(limits=levels(df$group))+
-  #scale_y_continuous(breaks=seq(0,60,5),expand = c(0, 0),lim=c(0,60))+
-  labs(x="Coral Species",y="Mean Rank")+
-  theme(legend.position = "none",legend.text=element_text(size=12),legend.title=element_blank()) + #extra to make it pretty
-  theme(panel.background = element_blank())+
-  #theme(text = element_text(family = "Times New Roman"))+
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"))
-
-```
-Just Points
-```{r}
-my.data$Species<-my.data$group
-ggplot(my.data,aes(physio,rank,color=Species)) +
-  geom_point() + 
-  theme_bw()+
-  xlab("physio (units)") + 
-  theme(legend.position="right")+ 
-  theme(text = element_text(size=12))+
-  ylab("rank (units)")  + 
-  theme(axis.text.x = element_text(angle = 45,hjust=1)) +  
-  theme(strip.text.x = element_text(size = 12))+
-  scale_color_manual(values=Mote2)
-
-```
 
