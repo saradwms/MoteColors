@@ -1,8 +1,3 @@
----
-title: "Mote Color Palettes"
-output: html_notebook
----
-
 ## Mote Marine Laboratory Colors
 
 This code contains the hex codes and names of the colors from Mote's toolkit and shows how to incorporate them into base R plots and ggplot. More graph examples in the 'MoteColorPalettes.rmd' file.
